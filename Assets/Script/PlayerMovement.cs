@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float speed = 6f;
     public Transform cam;
+    [SerializeField]
+    private Transform target;
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -16,10 +18,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Movement();
+        Jump();
     }
     void FixedUpdate()
     {
-        Jump();
     }
     void Movement()
     {
@@ -61,5 +63,9 @@ public class PlayerMovement : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
         }
         controller.Move(velocity * Time.deltaTime);
+    }
+    void LookAt()
+    {
+        transform.LookAt(target);
     }
 }
