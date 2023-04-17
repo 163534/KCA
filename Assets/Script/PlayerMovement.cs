@@ -15,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
 
+    private void Start()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
     void Update()
     {
         Movement();
@@ -27,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+
 
         // stores the Horizontal and Vertical input as a direction i.e W,A,S and D = forward, back, left and right //
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized; // normalized insures speed doesn't change if moving diagonally //
@@ -67,5 +73,12 @@ public class PlayerMovement : MonoBehaviour
     void LookAt()
     {
         transform.LookAt(target);
+    }
+    private void OnCollisionStay(Collision col)
+    {
+        if(col.gameObject.tag == "Climb")
+        {
+            Debug.Log("climbing");
+        }
     }
 }
