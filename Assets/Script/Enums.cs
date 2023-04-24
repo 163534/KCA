@@ -6,6 +6,8 @@ public enum Actions
     Move,
     Jump,
     Climb,
-    Idle
+    Idle,
+    Exit,
+    Falling
 }
 

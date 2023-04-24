@@ -9,31 +9,26 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    Vector3 velocity;
-    LayerMask groundLayerMask;
+    public Transform cam;
+    public Actions state;
+    
 
+    public float rotationAngle;
+    public float turnSmoothTime = 0.15f;
     public float speed = 6f;
     float jForce = 6f;
     float gravity = -10.8f;
-
+    float fgravity = -5f;
     float horizontal;
     float vertical;
-
-
-    public Transform cam;
-    [SerializeField]
-    private Transform target;
-    public Actions state;
-    bool grounded;
-    bool Jumping;
-    //bool climbing;
-    public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
+    bool grounded;
+
+    Vector3 velocity;
 
     private void Start()
     {
         state = Actions.Idle;
-        groundLayerMask = LayerMask.GetMask("Ground");
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -42,13 +37,7 @@ public class PlayerMovement : MonoBehaviour
         
         DoLogic();
     }
-    private void LateUpdate()
-    {
-        
-
-
-    }
-
+   
     void DoLogic()
     {
         if(state == Actions.Idle)
@@ -63,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Movement();
             CursorStates();
-            print("moving");
+           // print("moving");
             CheckForJump();
             ApplyGravity();
         }
@@ -72,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
             Movement();
             CheckForLanding();
             CursorStates();
-            print("jumping");
+           // print("jumping");
             ApplyGravity();
         }
         if(state == Actions.Climb)
@@ -81,23 +70,36 @@ public class PlayerMovement : MonoBehaviour
             CursorStates();
             print("Climbing");
         }
-
+        if(state == Actions.Exit)
+        {
+            StartCoroutine(Exit());
+            CursorStates(); 
+            
+        }
        // print("state=" + state);
        // print("grounded=" + grounded );
     }
     void Idle()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0 && !grounded)
+        if ( (Input.GetAxisRaw("Horizontal") != 0) || (Input.GetAxisRaw("Vertical") != 0) )
         {
             state = Actions.Move;
         }
-       
-        
+
+        if( Input.GetKeyDown("c"))
+        {
+            state = Actions.Climb;
+        }
     }
 
     void ApplyGravity()
     {
         velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+    }
+    void ApplyFalling()
+    {
+        velocity.y += fgravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
@@ -117,50 +119,80 @@ public class PlayerMovement : MonoBehaviour
         {
             state = Actions.Idle;
         }
-
     }
-
 
     void Movement()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
-        
-
         // stores the Horizontal and Vertical input as a direction i.e W,A,S and D = forward, back, left and right //
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized; // normalized insures speed doesn't change if moving diagonally //
+        /* Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized; // normalized insures speed doesn't change if moving diagonally //
+         if(direction.magnitude != 0)
+         {
+             controller.Move(direction * speed * Time.deltaTime);
+             print(direction);
 
-       // Vector3 jump = new Vector3(horizontal,1f, vertical).normalized;
+             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, rotationAngle, ref turnSmoothVelocity, turnSmoothTime);
+             if(direction.z > 0)
+             {
+
+                 rotationAngle = 0;
+                 transform.rotation = Quaternion.Euler(0, rotation, 0);
+             }
+             if (direction.z < 0)
+             {
+
+                 print("going backwards");
+                 rotationAngle = 180;
+                 transform.rotation = Quaternion.Euler(0, rotation, 0);
+             }
+         }*/
+        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        print("direction=" + direction);
 
         // If input is detected proceed //
         if (direction.magnitude >= 0.1f) // Magnitude means it's current value //
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
 
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime); // adds smoothing to the angles turn
 
-            transform.rotation = Quaternion.Euler(0f, angle, 0f); // Euler = combination of 3 quanternions - similar to Vector3 //
+            transform.rotation = Quaternion.Euler(0f, angle, 0f); // Euler = combination of 3 quanternions - similar to Vector3 // rotates the angle //
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * Time.deltaTime); // using the character controller component move the object in the input's direction by speed //
         }
         
-        if(Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
+        if( (Input.GetAxisRaw("Horizontal") == 0) && (Input.GetAxisRaw("Vertical") == 0))
         {
             state = Actions.Idle;
-        }
 
+        }
     }
-  
+
     void Climbing()
     {
-       /* if (climbing)
-        {
-            print("climbing up");
-            Vector3 climb = new Vector3(0f, 2f, 0f);
-            controller.Move(climb * Time.deltaTime * speed);
-        }*/
+         if (state == Actions.Climb)
+         {
+             
+             Vector3 climb = new Vector3(0f, 2f, 0f);
+             controller.Move(climb * Time.deltaTime * speed);
+         }
+        print("*** i am climbing ***");
+    }
+    IEnumerator Exit()
+    {
+        Vector3 stop = new Vector3(0, 0, 0);
+        
+        controller.Move(stop);
+        yield return new WaitForEndOfFrame();
+        controller.Move(Vector3.forward * Time.deltaTime * speed);
+        yield return new WaitForSecondsRealtime(0.5f);
+        print("Getting off ladder");
+        state = Actions.Idle;
+
+
     }
     void CursorStates()
     {
@@ -173,25 +205,20 @@ public class PlayerMovement : MonoBehaviour
     {
         if(col.CompareTag("Climb"))
         {
-            print("climbing");
-           
+            
+            state = Actions.Climb;
         }
-        else
+        if (col.CompareTag("Exit"))
         {
-            print("no longer climbing");
-           
+            state = Actions.Exit;
         }
     }
     void OnControllerColliderHit(ControllerColliderHit col)
     {
-        
-
         if (col.gameObject.tag == "Floor")
         {
             grounded = true;
             print("landed on " + col.gameObject.tag);
-
-
         }
     }
 }
