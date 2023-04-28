@@ -16,17 +16,15 @@ public class PlayerMovement : MonoBehaviour
     public float rotationAngle;
     public float turnSmoothTime = 0.15f;
     public float speed = 6f;
+
     float jForce = 6f;
-    float gravity = -10.8f;
-    float fgravity = -5f;
     float horizontal;
     float vertical;
     float turnSmoothVelocity;
-    bool grounded;
-
+    
     Vector3 velocity;
 
-    private void Start()
+    private void Awake()
     {
         state = Actions.Idle;
         Cursor.visible = false;
@@ -34,41 +32,46 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        
         DoLogic();
+        print(state);
     }
    
     void DoLogic()
     {
         if(state == Actions.Idle)
         {
+            //ApplyGravity();
             Idle();
             CursorStates();
-            print("Idling");
             CheckForJump();
-            ApplyGravity();
+            //print("Idling");
+            
         }
         if(state == Actions.Move)
         {
-            Movement();
-            CursorStates();
-           // print("moving");
-            CheckForJump();
+            
             ApplyGravity();
+            Movement();
+            CheckForJump();
+            CheckForIdle();
+            CursorStates();
+            
         }
         if(state == Actions.Jump)
         {
+            //print("in jump state");
+            
+            ApplyGravity();
             Movement();
             CheckForLanding();
             CursorStates();
-           // print("jumping");
-            ApplyGravity();
+            //controller.Move(velocity * Time.deltaTime);
         }
         if(state == Actions.Climb)
         {
             Climbing();
             CursorStates();
-            print("Climbing");
+           // print("Climbing");
         }
         if(state == Actions.Exit)
         {
@@ -76,11 +79,14 @@ public class PlayerMovement : MonoBehaviour
             CursorStates(); 
             
         }
-       // print("state=" + state);
-       // print("grounded=" + grounded );
+
+        // print("state=" + state);
+        // print("grounded=" + grounded );
+        print("Velocity =  " + velocity);
     }
     void Idle()
     {
+        GravReset();
         if ( (Input.GetAxisRaw("Horizontal") != 0) || (Input.GetAxisRaw("Vertical") != 0) )
         {
             state = Actions.Move;
@@ -90,66 +96,57 @@ public class PlayerMovement : MonoBehaviour
         {
             state = Actions.Climb;
         }
+        
     }
 
     void ApplyGravity()
     {
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        //velocity.y = gravity;
+        velocity -= new Vector3(0, 10 * Time.deltaTime, 0);
+        
     }
-    void ApplyFalling()
+    void GravReset()
     {
-        velocity.y += fgravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        velocity = new Vector3(velocity.x, 0, velocity.z);
     }
-
+    
     void CheckForJump()
     {
         if (Input.GetKeyDown(KeyCode.Space) ) //&& transform.position.y >= 1.1f)
         {
-            velocity.y = jForce;
             state = Actions.Jump;
-            grounded = false;
+            velocity.y = jForce;
         }
     }
-
     void CheckForLanding()
     {
-        if (grounded)
+        if (controller.isGrounded)
         {
+            GravReset();
             state = Actions.Idle;
         }
     }
+    
 
+    void CheckForIdle()
+    {
+        if ((Input.GetAxisRaw("Horizontal") == 0) && (Input.GetAxisRaw("Vertical") == 0))
+        {
+            GravReset();
+            state = Actions.Idle;
+        }
+
+    }
     void Movement()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
         // stores the Horizontal and Vertical input as a direction i.e W,A,S and D = forward, back, left and right //
-        /* Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized; // normalized insures speed doesn't change if moving diagonally //
-         if(direction.magnitude != 0)
-         {
-             controller.Move(direction * speed * Time.deltaTime);
-             print(direction);
-
-             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, rotationAngle, ref turnSmoothVelocity, turnSmoothTime);
-             if(direction.z > 0)
-             {
-
-                 rotationAngle = 0;
-                 transform.rotation = Quaternion.Euler(0, rotation, 0);
-             }
-             if (direction.z < 0)
-             {
-
-                 print("going backwards");
-                 rotationAngle = 180;
-                 transform.rotation = Quaternion.Euler(0, rotation, 0);
-             }
-         }*/
+        //Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized; // normalized insures speed doesn't change if moving diagonally //
+         
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-        print("direction=" + direction);
+       // print("direction=" + direction);
 
         // If input is detected proceed //
         if (direction.magnitude >= 0.1f) // Magnitude means it's current value //
@@ -161,14 +158,14 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f); // Euler = combination of 3 quanternions - similar to Vector3 // rotates the angle //
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime); // using the character controller component move the object in the input's direction by speed //
+            controller.Move( (moveDir.normalized * speed * Time.deltaTime) ); // using the character controller component move the object in the input's direction by speed //
         }
-        
-        if( (Input.GetAxisRaw("Horizontal") == 0) && (Input.GetAxisRaw("Vertical") == 0))
-        {
-            state = Actions.Idle;
 
-        }
+        controller.Move(velocity * Time.deltaTime);
+        
+        
+
+
     }
 
     void Climbing()
@@ -179,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
              Vector3 climb = new Vector3(0f, 2f, 0f);
              controller.Move(climb * Time.deltaTime * speed);
          }
-        print("*** i am climbing ***");
+       // print("*** i am climbing ***");
     }
     IEnumerator Exit()
     {
@@ -189,11 +186,13 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForEndOfFrame();
         controller.Move(Vector3.forward * Time.deltaTime * speed);
         yield return new WaitForSecondsRealtime(0.5f);
-        print("Getting off ladder");
+       // print("Getting off ladder");
         state = Actions.Idle;
 
 
     }
+
+
     void CursorStates()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -213,12 +212,5 @@ public class PlayerMovement : MonoBehaviour
             state = Actions.Exit;
         }
     }
-    void OnControllerColliderHit(ControllerColliderHit col)
-    {
-        if (col.gameObject.tag == "Floor")
-        {
-            grounded = true;
-            print("landed on " + col.gameObject.tag);
-        }
-    }
+    
 }
