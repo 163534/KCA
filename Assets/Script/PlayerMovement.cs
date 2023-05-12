@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
         // print("state=" + state);
         // print("grounded=" + grounded );
-        print("Velocity =  " + velocity);
+        //print("Velocity =  " + velocity);
     }
     void Idle()
     {
