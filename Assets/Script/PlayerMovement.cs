@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         DoLogic();
-        print(state);
+        //print(state);
     }
    
     void DoLogic()
@@ -107,7 +107,10 @@ public class PlayerMovement : MonoBehaviour
     }
     void GravReset()
     {
-        velocity = new Vector3(velocity.x, 0, velocity.z);
+        if(velocity.y <= -10)
+        {
+            velocity.y = 0;
+        }
     }
     
     void CheckForJump()
@@ -160,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move( (moveDir.normalized * speed * Time.deltaTime) ); // using the character controller component move the object in the input's direction by speed //
         }
-
+        GravReset();
         controller.Move(velocity * Time.deltaTime);
         
         
