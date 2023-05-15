@@ -7,6 +7,10 @@ public class SpawnerScript : MonoBehaviour
     public GameObject babyTomato;
     public GameObject spawnPoint;
 
+    private void Start()
+    {
+        GameObject.FindObjectsOfTypeAll()
+    }
     private void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))

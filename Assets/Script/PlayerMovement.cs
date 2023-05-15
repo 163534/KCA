@@ -45,17 +45,14 @@ public class PlayerMovement : MonoBehaviour
             CursorStates();
             CheckForJump();
             //print("Idling");
-            
         }
         if(state == Actions.Move)
         {
-            
             ApplyGravity();
             Movement();
             CheckForJump();
             CheckForIdle();
             CursorStates();
-            
         }
         if(state == Actions.Jump)
         {
@@ -77,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Exit());
             CursorStates(); 
-            
         }
 
         // print("state=" + state);
@@ -91,7 +87,6 @@ public class PlayerMovement : MonoBehaviour
         {
             state = Actions.Move;
         }
-
         if( Input.GetKeyDown("c"))
         {
             state = Actions.Climb;
@@ -103,7 +98,6 @@ public class PlayerMovement : MonoBehaviour
     {
         //velocity.y = gravity;
         velocity -= new Vector3(0, 10 * Time.deltaTime, 0);
-        
     }
     void GravReset()
     {
@@ -165,17 +159,12 @@ public class PlayerMovement : MonoBehaviour
         }
         GravReset();
         controller.Move(velocity * Time.deltaTime);
-        
-        
-
-
     }
 
     void Climbing()
     {
          if (state == Actions.Climb)
          {
-             
              Vector3 climb = new Vector3(0f, 2f, 0f);
              controller.Move(climb * Time.deltaTime * speed);
          }
@@ -191,8 +180,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
        // print("Getting off ladder");
         state = Actions.Idle;
-
-
     }
 
 
@@ -207,7 +194,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if(col.CompareTag("Climb"))
         {
-            
             state = Actions.Climb;
         }
         if (col.CompareTag("Exit"))

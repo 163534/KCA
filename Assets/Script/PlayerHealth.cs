@@ -13,7 +13,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         healthBar = GameObject.Find("HealthBar").GetComponent<Slider>();
-
+        
     } 
     public void HealthCheck()
     {
