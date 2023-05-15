@@ -7,17 +7,17 @@ public class PlayerHealth : MonoBehaviour
 {
     public int currentHealth;
     public int maxHealth = 100;
-    Image healthBar;
+    Slider healthBar;
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
-        healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+        healthBar = GameObject.Find("HealthBar").GetComponent<Slider>();
 
     } 
     public void HealthCheck()
     {
-        healthBar.fillAmount = currentHealth / maxHealth;
+        healthBar.value = currentHealth;
 
         if (currentHealth > 100)
         {

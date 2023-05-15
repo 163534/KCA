@@ -21,6 +21,7 @@ public class EnemyScript : MonoBehaviour
         playerPos = player.transform;
         enemyHealth = enemyMaxHealth;
         chasing = true;
+        nav.angularSpeed = 240;
         
     }
     private void Update()

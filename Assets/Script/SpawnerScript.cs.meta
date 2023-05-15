@@ -3,7 +3,9 @@ guid: 169bc05002fc0e344ad666dcdfc03cd8
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - babyTomato: {fileID: 9153749747872480383, guid: fd7cff781d82aaf49911f87cfdaf2f2d, type: 3}
+  - spawnPoint: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
