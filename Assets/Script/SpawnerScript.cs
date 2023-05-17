@@ -20,6 +20,7 @@ public class SpawnerScript : MonoBehaviour
     }
     public void SpawnEnemy()
     {
-        Instantiate(babyTomato, spawnPoint.transform);
+       GameObject obj = Instantiate(babyTomato, spawnPoint.transform);
+        obj.transform.rotation = spawnPoint.transform.rotation;
     }
 }
