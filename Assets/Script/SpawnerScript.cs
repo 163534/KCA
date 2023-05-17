@@ -9,7 +9,7 @@ public class SpawnerScript : MonoBehaviour
 
     private void Start()
     {
-        GameObject.FindObjectsOfTypeAll()
+        
     }
     private void OnTriggerEnter(Collider col)
     {

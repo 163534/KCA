@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public float turnSmoothTime = 0.15f;
     public float speed = 6f;
 
-    float jForce = 6f;
+    public float jForce = 6f;
     float horizontal;
     float vertical;
     float turnSmoothVelocity;
