@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class EnemyScript : MonoBehaviour
 {
-    public NavMeshAgent nav;
+    NavMeshAgent nav;
     Rigidbody rb;
     public Transform playerPos;
     public GameObject player;
@@ -14,10 +15,9 @@ public class EnemyScript : MonoBehaviour
     float enemySpeed;
     int groundCheck;
     public int enemyHealth, enemyMaxHealth = 60;
-    // Start is called before the first frame update
     void Start()
     {   
-        WhenSpawned();
+        
         rb = GetComponent<Rigidbody>();
         nav = GetComponent<NavMeshAgent>();
         nav.enabled = false;
@@ -27,7 +27,9 @@ public class EnemyScript : MonoBehaviour
         enemyHealth = enemyMaxHealth;
         chasing = true;
         nav.angularSpeed = 240;
-        
+
+        WhenSpawned();
+
     }
     private void Update()
     {
@@ -55,8 +57,9 @@ public class EnemyScript : MonoBehaviour
     }
     void ChasePlayer()
     {
-        if (chasing)
+        if (chasing && nav.enabled == true)
         {
+            
             nav.SetDestination(playerPos.position);
             nav.speed = enemySpeed;
         }
@@ -64,6 +67,12 @@ public class EnemyScript : MonoBehaviour
         {
             nav.speed = 0;
         }
+    }
+    void WhenSpawned()
+    {
+        groundCheck = 1;
+        rb.isKinematic = false;
+        rb.velocity = (transform.up * 5) + (transform.forward * 6);
     }
     IEnumerator Attack()
     {
@@ -73,9 +82,5 @@ public class EnemyScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(3.5f);
         chasing = true;
     }
-    void WhenSpawned()
-    {
-        rb.isKinematic = false;
-        rb.velocity = new Vector3(0, 10, 0) + (Vector3.forward * 3);
-    }
+    
 }
