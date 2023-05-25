@@ -22,7 +22,7 @@ public class EnemyScript : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         nav.enabled = false;
         enemySpeed = 6f;
-        player = GameObject.Find("Kyle");
+        player = GameObject.Find("Kyle2.1");
         playerPos = player.transform;
         enemyHealth = enemyMaxHealth;
         chasing = true;
