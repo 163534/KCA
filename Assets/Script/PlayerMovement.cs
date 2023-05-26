@@ -10,25 +10,32 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public Transform cam;
+    Animator anim;
     public Actions state;
     
 
     public float rotationAngle;
     public float turnSmoothTime = 0.15f;
     public float speed = 8f;
-
     public float jForce = 6f;
+
+    bool attack;
+
     float horizontal;
     float vertical;
     float turnSmoothVelocity;
+
+    private string currentState;
     
     Vector3 velocity;
 
     private void Awake()
     {
+        attack = false;
         state = Actions.Idle;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        anim = GetComponent<Animator>();
     }
     void Update()
     {
@@ -45,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
             CursorStates();
             CheckForJump();
             //print("Idling");
+            CheckForAttack();
+            ChangeAnim("Idle");
         }
         if(state == Actions.Move)
         {
@@ -52,7 +61,9 @@ public class PlayerMovement : MonoBehaviour
             Movement();
             CheckForJump();
             CheckForIdle();
+            CheckForAttack();
             CursorStates();
+            ChangeAnim("Walk");
         }
         if(state == Actions.Jump)
         {
@@ -61,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
             ApplyGravity();
             Movement();
             CheckForLanding();
+            CheckForAttack();
             CursorStates();
             //controller.Move(velocity * Time.deltaTime);
         }
@@ -74,6 +86,10 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Exit());
             CursorStates(); 
+        }
+        if(state == Actions.Attack)
+        {
+            
         }
 
         // print("state=" + state);
@@ -123,8 +139,18 @@ public class PlayerMovement : MonoBehaviour
             state = Actions.Idle;
         }
     }
-    
-
+    void CheckForAttack()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            ChangeAnim("Slap");
+            print("attacked");
+        }
+    }
+    public void Attack()
+    {
+        attack = true;
+    }
     void CheckForIdle()
     {
         if ((Input.GetAxisRaw("Horizontal") == 0) && (Input.GetAxisRaw("Vertical") == 0))
@@ -182,6 +208,14 @@ public class PlayerMovement : MonoBehaviour
         state = Actions.Idle;
     }
 
+    void ChangeAnim(string newState)
+    {
+        if (currentState == newState) return;
+
+        anim.Play(newState);
+
+        currentState = newState;
+    }
 
     void CursorStates()
     {
@@ -199,6 +233,12 @@ public class PlayerMovement : MonoBehaviour
         if (col.CompareTag("Exit"))
         {
             state = Actions.Exit;
+        }
+        if (col.CompareTag("Enemy") && attack)
+        {
+            col.gameObject.GetComponent<EnemyScript>().EnemyTakeDamage(30);
+            attack = false;
+            // How to check if col doesn't have script
         }
     }
     

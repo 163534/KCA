@@ -12,6 +12,7 @@ public class EnemyScript : MonoBehaviour
     public Transform playerPos;
     public GameObject player;
     public bool chasing;
+    bool attacked;
     float enemySpeed;
     int groundCheck;
     public int enemyHealth, enemyMaxHealth = 60;
@@ -22,7 +23,7 @@ public class EnemyScript : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         nav.enabled = false;
         enemySpeed = 6f;
-        player = GameObject.Find("Kyle2.1");
+        player = GameObject.Find("Kyle_Final");
         playerPos = player.transform;
         enemyHealth = enemyMaxHealth;
         chasing = true;
@@ -40,6 +41,10 @@ public class EnemyScript : MonoBehaviour
     {
         enemyHealth -= damageAmount;
         enemyHealth = Mathf.Clamp(enemyHealth, 0, enemyMaxHealth);
+    }
+    public void Attacked()
+    {
+        
     }
     public void OnCollisionEnter(Collision col)
     {
@@ -77,9 +82,9 @@ public class EnemyScript : MonoBehaviour
     IEnumerator Attack()
     {
        // print("coRoutine");
-        player.gameObject.GetComponent<PlayerHealth>().TakeDamage(20);
+        player.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
         chasing = false;
-        yield return new WaitForSecondsRealtime(3.5f);
+        yield return new WaitForSecondsRealtime(4.5f);
         chasing = true;
     }
     
