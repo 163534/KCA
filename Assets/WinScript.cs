@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WinScript : MonoBehaviour
 {
     public GameObject winMenu;
-    bool win;
+    public bool win;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class WinScript : MonoBehaviour
         {
             winMenu.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
     private void OnTriggerEnter(Collider col)
@@ -31,6 +33,7 @@ public class WinScript : MonoBehaviour
         if(col.gameObject.tag == "Player")
         {
             win = true;
+            //SceneManager.LoadScene(0);
         }
     }
 }

@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Search;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -30,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private string currentState;
     
     Vector3 velocity;
-    
+    public WinScript ws;
 
     private void Awake()
     {
@@ -38,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         attack = false;
         state = Actions.Idle;
         anim = GetComponent<Animator>();
+        
     }
     private void Start()
     {
@@ -156,8 +154,12 @@ public class PlayerMovement : MonoBehaviour
             print("attacked");
             canAttack = false;
             Invoke("CanAttack", 0.83f);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (!ws.win)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+            }
         }
     }
     void CanAttack()
