@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Climb
+  - Floor
+  - Exit
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,7 +15,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

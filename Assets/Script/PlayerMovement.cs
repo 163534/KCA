@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     public float jForce = 6f;
 
     bool attack;
+    bool disableControl;
+    bool canAttack;
 
     float horizontal;
     float vertical;
@@ -28,14 +30,21 @@ public class PlayerMovement : MonoBehaviour
     private string currentState;
     
     Vector3 velocity;
+    
 
     private void Awake()
     {
+        disableControl = false;
         attack = false;
         state = Actions.Idle;
+        anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        anim = GetComponent<Animator>();
+        canAttack = true;
+        
     }
     void Update()
     {
@@ -99,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
     void Idle()
     {
         GravReset();
-        if ( (Input.GetAxisRaw("Horizontal") != 0) || (Input.GetAxisRaw("Vertical") != 0) )
+        if ( (Input.GetAxisRaw("Horizontal") != 0) || (Input.GetAxisRaw("Vertical") != 0) && disableControl == false)
         {
             state = Actions.Move;
         }
@@ -119,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(velocity.y <= -10)
         {
-            velocity.y = 0;
+            velocity.y = -9;
         }
     }
     
@@ -141,11 +150,19 @@ public class PlayerMovement : MonoBehaviour
     }
     void CheckForAttack()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0) && disableControl == false && canAttack )
         {
             ChangeAnim("Slap");
             print("attacked");
+            canAttack = false;
+            Invoke("CanAttack", 0.83f);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
+    }
+    void CanAttack()
+    {
+        canAttack = true;
     }
     public void Attack()
     {
@@ -222,19 +239,21 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
     private void OnTriggerStay(Collider col)
     {
-        if(col.CompareTag("Climb"))
+        print("gameobject= " + gameObject.name + " player= " + col.gameObject.tag);
+        if(col.gameObject.tag=="Climb")
         {
             state = Actions.Climb;
         }
-        if (col.CompareTag("Exit"))
+        if (col.gameObject.tag == "Exit")
         {
             state = Actions.Exit;
         }
-        if (col.CompareTag("Enemy") && attack)
+        if (col.gameObject.tag=="Enemy" && attack)
         {
             col.gameObject.GetComponent<EnemyScript>().EnemyTakeDamage(30);
             attack = false;

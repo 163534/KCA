@@ -36,15 +36,19 @@ public class EnemyScript : MonoBehaviour
     {
         print(nav.hasPath);
         ChasePlayer();
+        CheckEnemyHealth();
     }
     public void EnemyTakeDamage(int damageAmount)
     {
         enemyHealth -= damageAmount;
         enemyHealth = Mathf.Clamp(enemyHealth, 0, enemyMaxHealth);
     }
-    public void Attacked()
+    public void CheckEnemyHealth()
     {
-        
+        if(enemyHealth == 0)
+        {
+            Destroy(gameObject);
+        }
     }
     public void OnCollisionEnter(Collision col)
     {

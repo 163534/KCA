@@ -9,15 +9,17 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100;
     Slider healthBar;
     GameObject healthBarFill;
+    public GameObject dMenu;
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
         healthBar = GameObject.Find("HealthBar").GetComponent<Slider>();
         healthBarFill = GameObject.Find("HealthBarFill");
+        dMenu.SetActive(false);
         
-    } 
-    
+    }
+   
     public void HealthCheck()
     {
         healthBar.value = currentHealth;
@@ -33,7 +35,9 @@ public class PlayerHealth : MonoBehaviour
         if(currentHealth == 0)
         {
             healthBarFill.SetActive(false);
-        }
+            dMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None; 
+}
         else
         {
             healthBarFill.SetActive(true);
@@ -41,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
     }
     private void Update()
     {
-        print(currentHealth);
+        //print(currentHealth);
 
         HealthCheck();
         
