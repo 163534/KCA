@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MenuScript : MonoBehaviour
 {
     public GameObject[] menu; // 0 = Main menu, 1 = Instructions menu, 2 = Options menu //
+    public GameObject greet;
     public bool[] back; // 0 = Main menu,  1 = Instructions menu, 2 = options // 
     bool cursorOn;
     public void StartButton()
@@ -14,16 +15,14 @@ public class MenuScript : MonoBehaviour
     }
     private void Update()
     {
-        if (cursorOn)
+        
+        if (menu[0].activeInHierarchy)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            greet.SetActive(true);
         }
         else
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            
+            greet.SetActive(false);
         }
     }
     public void InstuctionsButton()

@@ -13,6 +13,7 @@ public class DeathMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+        
     }
     public void RestartButton()
     {
