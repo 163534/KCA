@@ -39,10 +39,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        canAttack = true;
-        
+            
     }
     void Update()
     {
@@ -132,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     
     void CheckForJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) ) //&& transform.position.y >= 1.1f)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             state = Actions.Jump;
             velocity.y = jForce;
@@ -146,14 +143,16 @@ public class PlayerMovement : MonoBehaviour
             state = Actions.Idle;
         }
     }
+
+    
     void CheckForAttack()
     {
-        if (Input.GetMouseButtonDown(0) && disableControl == false && canAttack )
+        if (Input.GetMouseButtonDown(0))
         {
             ChangeAnim("Slap");
             print("attacked");
-            canAttack = false;
-            Invoke("CanAttack", 0.83f);
+            
+            
             if (!ws.win)
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -162,10 +161,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    void CanAttack()
-    {
-        canAttack = true;
-    }
+    
     public void Attack()
     {
         attack = true;
@@ -259,6 +255,7 @@ public class PlayerMovement : MonoBehaviour
         {
             col.gameObject.GetComponent<EnemyScript>().EnemyTakeDamage(30);
             attack = false;
+
             // How to check if col doesn't have script
         }
     }

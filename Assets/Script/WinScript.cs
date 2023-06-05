@@ -11,15 +11,11 @@ public class WinScript : MonoBehaviour
     void Start()
     {
         win = false;
-        winMenu.SetActive(false);
+        
     }
 
     // Update is called once per frame
     void Update()
-    {
-        Win();
-    }
-    void Win()
     {
         if (win)
         {
@@ -27,7 +23,14 @@ public class WinScript : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+        else
+        {
+            winMenu.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
+    
     private void OnTriggerEnter(Collider col)
     {
         if(col.gameObject.tag == "Player")
