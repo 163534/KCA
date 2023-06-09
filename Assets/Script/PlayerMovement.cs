@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform cam;
     Animator anim;
     public Actions state;
+    public DeathMenu dM;
     
 
     public float rotationAngle;
@@ -18,8 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool attack;
     bool disableControl;
-    bool canAttack;
-
+    
     float horizontal;
     float vertical;
     float turnSmoothVelocity;
@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f); // Euler = combination of 3 quanternions - similar to Vector3 // rotates the angle //
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move( (moveDir.normalized * speed * Time.deltaTime) ); // using the character controller component move the object in the input's direction by speed //
+            controller.Move((moveDir.normalized * speed * Time.deltaTime)); // using the character controller component move the object in the input's direction by speed //
         }
         GravReset();
         controller.Move(velocity * Time.deltaTime);

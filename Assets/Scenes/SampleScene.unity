@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -715,6 +715,7 @@ GameObject:
   - component: {fileID: 179233409}
   - component: {fileID: 179233408}
   - component: {fileID: 179233410}
+  - component: {fileID: 179233411}
   m_Layer: 0
   m_Name: WinZone
   m_TagString: Untagged
@@ -764,6 +765,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winMenu: {fileID: 867285823}
   win: 0
+--- !u!114 &179233411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179233407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37f57ef4b9669740bfa8d0b1be5046e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dMenu: {fileID: 0}
 --- !u!4 &195418145 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ed841dbe26665646b547b359710709e, type: 3}
@@ -5074,7 +5088,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.051176127, y: 0.0025336305, z: -0.00012983194, w: 0.99868643}
+  m_LocalRotation: {x: 0.051176086, y: 0.0025335609, z: -0.00012982827, w: 0.99868643}
   m_LocalPosition: {x: 32.379765, y: 5, z: 38.40006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6111,7 +6125,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132216635}
-  m_LocalRotation: {x: -0.012166655, y: 0.0025367325, z: 0.000030865926, w: 0.9999228}
+  m_LocalRotation: {x: -0.012166651, y: 0.0025367334, z: 0.00003086593, w: 0.9999228}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8601,6 +8615,7 @@ MonoBehaviour:
   controller: {fileID: 1606112506}
   cam: {fileID: 963194228}
   state: 0
+  dM: {fileID: 179233411}
   rotationAngle: 0
   turnSmoothTime: 0.15
   speed: 12
@@ -8812,7 +8827,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614900385}
-  m_LocalRotation: {x: 0.051176112, y: 0.0025336132, z: -0.00012983104, w: 0.99868643}
+  m_LocalRotation: {x: 0.05117609, y: 0.002533578, z: -0.00012982916, w: 0.99868643}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

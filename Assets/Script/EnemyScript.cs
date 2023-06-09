@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
+
 
 public class EnemyScript : MonoBehaviour
 {
@@ -12,7 +12,6 @@ public class EnemyScript : MonoBehaviour
     public Transform playerPos;
     public GameObject player;
     public bool chasing;
-    bool attacked;
     float enemySpeed;
     int groundCheck;
     public int enemyHealth, enemyMaxHealth = 60;
