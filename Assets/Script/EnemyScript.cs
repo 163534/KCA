@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     Rigidbody rb;
     public Transform playerPos;
     public GameObject player;
+    
     public bool chasing;
     float enemySpeed;
     int groundCheck;
@@ -27,9 +28,9 @@ public class EnemyScript : MonoBehaviour
         enemyHealth = enemyMaxHealth;
         chasing = true;
         nav.angularSpeed = 240;
-
+        
+        
         WhenSpawned();
-
     }
     private void Update()
     {
@@ -71,10 +72,15 @@ public class EnemyScript : MonoBehaviour
             nav.SetDestination(playerPos.position);
             nav.speed = enemySpeed;
         }
-        else
+        // sometimes the tomato just falls through the map, I have no idea why but I've added the below code to try and sort it out //
+        if(transform.position.y < -1)
         {
-            nav.speed = 0;
+            
+            transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y,  transform.position.z);
+            
         }
+        
     }
     void WhenSpawned()
     {
@@ -87,8 +93,12 @@ public class EnemyScript : MonoBehaviour
        // print("coRoutine");
         player.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
         chasing = false;
+        nav.enabled = false;
+        transform.Translate(-transform.forward * enemySpeed * Time.deltaTime);
         yield return new WaitForSecondsRealtime(4.5f);
         chasing = true;
+        nav.enabled = true;
     }
+    
     
 }

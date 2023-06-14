@@ -8,10 +8,10 @@ public class MenuScript : MonoBehaviour
     public GameObject[] menu; // 0 = Main menu, 1 = Instructions menu, 2 = Options menu //
     public GameObject greet;
     public bool[] back; // 0 = Main menu,  1 = Instructions menu, 2 = options // 
-    
-    public void StartButton()
+
+    private void Start()
     {
-        SceneManager.LoadScene(1);
+        AudioManager.instance.PlayMusic("mainMusic");
     }
     private void Update()
     {
@@ -24,6 +24,11 @@ public class MenuScript : MonoBehaviour
         {
             greet.SetActive(false);
         }
+    }
+    public void StartButton()
+    {
+        SceneManager.LoadScene(1);
+        AudioManager.instance.PlayMusic("mainMusic");
     }
     public void InstuctionsButton()
     {

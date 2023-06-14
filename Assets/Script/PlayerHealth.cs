@@ -20,34 +20,15 @@ public class PlayerHealth : MonoBehaviour
         
     }
    
-    public void HealthCheck()
+    public void HealthBarValue()
     {
         healthBar.value = currentHealth;
-
-        if (currentHealth > 100)
-        {
-            currentHealth = 100;
-        }
-        if(currentHealth < 0)
-        {
-            currentHealth = 0;
-        }
-        if(currentHealth == 0)
-        {
-            healthBarFill.SetActive(false);
-            dMenu.SetActive(true);
-            Cursor.lockState = CursorLockMode.None; 
-}
-        else
-        {
-            healthBarFill.SetActive(true);
-        }
     }
     private void Update()
     {
         //print(currentHealth);
 
-        HealthCheck();
+        HealthBarValue();
         
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -67,7 +48,19 @@ public class PlayerHealth : MonoBehaviour
         
         if (currentHealth <= 0)
         {
-            print("Died!");
+            //print("Died!");
+            healthBarFill.SetActive(false);
+            dMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            healthBarFill.SetActive(true);
+        }
+        
+        if (currentHealth > 100)
+        {
+            currentHealth = 100;
         }
     }
     public void HealDamage(int healAmount)

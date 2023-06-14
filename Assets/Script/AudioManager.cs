@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -23,11 +21,7 @@ public class AudioManager : MonoBehaviour
         }
         
     }
-    private void Start()
-    {
-
-        PlayMusic("Background");
-    }
+    
     public void PlayMusic(string name)
     {
         Sounds s = Array.Find(musicSounds, x => x.name == name);
