@@ -30,18 +30,19 @@ public class PlayerHealth : MonoBehaviour
 
         HealthBarValue();
         
-        if (Input.GetKeyDown(KeyCode.T))
+      /*  if (Input.GetKeyDown(KeyCode.T))
         {
             HealDamage(15);
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
             TakeDamage(15);
-        }
+        }*/
         
     }
     public void TakeDamage(int damageAmount)
     {
+        AudioManager.instance.PlaySFX("Damaged");
         currentHealth -= damageAmount;
 
         //print("player damage is now " + currentHealth);
