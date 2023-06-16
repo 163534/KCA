@@ -259,6 +259,11 @@ public class PlayerMovement : MonoBehaviour
 
             // How to check if col doesn't have script
         }
+        if(col.gameObject.tag == "Boss" && attack)
+        {
+            col.gameObject.GetComponent<BossScript>().EnemyTakeDamage(30);
+            attack = false;
+        }
     }
     
 }

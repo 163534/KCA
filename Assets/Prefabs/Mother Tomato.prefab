@@ -679,7 +679,7 @@ GameObject:
   - component: {fileID: 4373645035654994536}
   m_Layer: 0
   m_Name: Mother Tomato
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -763,9 +763,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.0544167
-  m_Height: 2.2213566
+  m_Height: 2.8289545
   m_Direction: 1
-  m_Center: {x: 0.0008506775, y: 1.8968405, z: 0.2687149}
+  m_Center: {x: 0.0008506775, y: 1.5930415, z: 0.2687149}
 --- !u!54 &4373645035654994536
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -780,7 +780,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1 &8370847856309097428
 GameObject:

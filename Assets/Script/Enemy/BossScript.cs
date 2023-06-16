@@ -9,37 +9,24 @@ public class BossScript : MonoBehaviour
     NavMeshAgent nav;
     Rigidbody rb;
     public Transform playerPos;
-    public Transform summonPos;
     public GameObject player;
-    public GameObject summon;
 
     public bool chasing;
-    bool summonCheck;
-    bool summonReached;
     float enemySpeed;
     int groundCheck;
-    public int enemyHealth, enemyMaxHealth = 300;
-
-    public GameObject babyTomato;
-    public GameObject[] spawnPoint;
+    public int enemyHealth, enemyMaxHealth = 60;
     void Start()
     {
 
         rb = GetComponent<Rigidbody>();
         nav = GetComponent<NavMeshAgent>();
-        player = GameObject.Find("Kyle_Final");
-        summon = GameObject.Find("BossSpawner");
-        playerPos = player.transform;
-        summonPos = summon.transform;
-        
-        enemyHealth = enemyMaxHealth;
-        enemySpeed = 6f;
-        nav.angularSpeed = 240;
-
-        chasing = true;
         nav.enabled = false;
-        summonCheck = false;
-        summonReached = false;
+        enemySpeed = 6f;
+        player = GameObject.Find("Kyle_Final");
+        playerPos = player.transform;
+        enemyHealth = enemyMaxHealth;
+        chasing = true;
+        nav.angularSpeed = 240;
 
 
         WhenSpawned();
@@ -61,15 +48,19 @@ public class BossScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if(enemyHealth == 210)
+    }
+    public void OnCollisionEnter(Collision col)
+    {
+        //print("hit2 " + col.gameObject.tag);
+        if (col.collider.tag == "Player")
         {
-            StartCoroutine("Summoning");
-            
+            //print("damaged! pt 1");
+            StartCoroutine("Attack");
         }
-        if(enemyHealth == 120)
+        if (col.collider.tag == "Floor" && groundCheck == 1)
         {
-            StartCoroutine("Summoning");
-            
+            nav.enabled = true;
+            groundCheck = 0;
         }
     }
     void ChasePlayer()
@@ -81,14 +72,6 @@ public class BossScript : MonoBehaviour
             nav.speed = enemySpeed;
         }
         // sometimes the tomato just falls through the map, I have no idea why but I've added the below code to try and sort it out //
-        if (transform.position.y < -1)
-        {
-
-            transform.position = new Vector3(transform.position.x, 1, transform.position.z);
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-
-        }
-
     }
     void WhenSpawned()
     {
@@ -107,45 +90,5 @@ public class BossScript : MonoBehaviour
         chasing = true;
         nav.enabled = true;
     }
-    IEnumerator Summoning()
-    {
-        summonCheck = true;
-        if (summonCheck)
-        {
-            nav.SetDestination(summonPos.position);
-            if (summonReached)
-            {
-                for (int i = 0; i < spawnPoint.Length; i++)
-                {
-                    GameObject obj = Instantiate(babyTomato);
-                    obj.transform.rotation = spawnPoint[i].transform.rotation;
-                    obj.transform.position = spawnPoint[i].transform.position;
 
-                }
-                yield return new WaitForSecondsRealtime(3);
-                summonCheck = false;
-            }
-        }
-    } 
-    public void OnCollisionEnter(Collision col)
-    {
-        //print("hit2 " + col.gameObject.tag);
-        if (col.collider.tag == "Player")
-        {
-            //print("damaged! pt 1");
-            StartCoroutine("Attack");
-        }
-        if (col.collider.tag == "Floor" && groundCheck == 1)
-        {
-            nav.enabled = true;
-            groundCheck = 0;
-        }
-    }
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Summon"))
-        {
-            summonReached = true;
-        }
-    }
 }
