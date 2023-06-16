@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,24 +9,37 @@ public class BossScript : MonoBehaviour
     NavMeshAgent nav;
     Rigidbody rb;
     public Transform playerPos;
+    public Transform summonPos;
     public GameObject player;
+    public GameObject summon;
 
     public bool chasing;
+    bool summonCheck;
+    bool summonReached;
     float enemySpeed;
     int groundCheck;
     public int enemyHealth, enemyMaxHealth = 300;
+
+    public GameObject babyTomato;
+    public GameObject[] spawnPoint;
     void Start()
     {
 
         rb = GetComponent<Rigidbody>();
         nav = GetComponent<NavMeshAgent>();
-        nav.enabled = false;
-        enemySpeed = 6f;
         player = GameObject.Find("Kyle_Final");
+        summon = GameObject.Find("BossSpawner");
         playerPos = player.transform;
+        summonPos = summon.transform;
+        
         enemyHealth = enemyMaxHealth;
-        chasing = true;
+        enemySpeed = 6f;
         nav.angularSpeed = 240;
+
+        chasing = true;
+        nav.enabled = false;
+        summonCheck = false;
+        summonReached = false;
 
 
         WhenSpawned();
@@ -50,24 +64,12 @@ public class BossScript : MonoBehaviour
         if(enemyHealth == 210)
         {
             StartCoroutine("Summoning");
+            
         }
         if(enemyHealth == 120)
         {
             StartCoroutine("Summoning");
-        }
-    }
-    public void OnCollisionEnter(Collision col)
-    {
-        //print("hit2 " + col.gameObject.tag);
-        if (col.collider.tag == "Player")
-        {
-            //print("damaged! pt 1");
-            StartCoroutine("Attack");
-        }
-        if (col.collider.tag == "Floor" && groundCheck == 1)
-        {
-            nav.enabled = true;
-            groundCheck = 0;
+            
         }
     }
     void ChasePlayer()
@@ -107,6 +109,43 @@ public class BossScript : MonoBehaviour
     }
     IEnumerator Summoning()
     {
+        summonCheck = true;
+        if (summonCheck)
+        {
+            nav.SetDestination(summonPos.position);
+            if (summonReached)
+            {
+                for (int i = 0; i < spawnPoint.Length; i++)
+                {
+                    GameObject obj = Instantiate(babyTomato);
+                    obj.transform.rotation = spawnPoint[i].transform.rotation;
+                    obj.transform.position = spawnPoint[i].transform.position;
 
+                }
+                yield return new WaitForSecondsRealtime(3);
+                summonCheck = false;
+            }
+        }
+    } 
+    public void OnCollisionEnter(Collision col)
+    {
+        //print("hit2 " + col.gameObject.tag);
+        if (col.collider.tag == "Player")
+        {
+            //print("damaged! pt 1");
+            StartCoroutine("Attack");
+        }
+        if (col.collider.tag == "Floor" && groundCheck == 1)
+        {
+            nav.enabled = true;
+            groundCheck = 0;
+        }
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Summon"))
+        {
+            summonReached = true;
+        }
     }
 }
