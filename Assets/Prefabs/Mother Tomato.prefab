@@ -673,7 +673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8687766631090761091}
-  - component: {fileID: 468248958360881752}
+  - component: {fileID: 6410457596420974553}
   - component: {fileID: 6367047161571563372}
   - component: {fileID: 5931661894550253343}
   - component: {fileID: 4373645035654994536}
@@ -708,7 +708,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &468248958360881752
+--- !u!114 &6410457596420974553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -721,15 +721,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPos: {fileID: 0}
+  sp: {fileID: 0}
   summonPos: {fileID: 0}
   player: {fileID: 0}
-  summon: {fileID: 0}
-  chasing: 0
-  enemyHealth: 0
-  enemyMaxHealth: 300
+  actions: 0
   babyTomato: {fileID: 6997075024467418889, guid: 67f0ea4c77d582e4b8cbd60e923e87cd, type: 3}
   spawnPoint:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  chasing: 0
+  enemyHealth: 0
+  enemyMaxHealth: 300
 --- !u!195 &6367047161571563372
 NavMeshAgent:
   m_ObjectHideFlags: 0

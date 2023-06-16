@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,12 +10,20 @@ public class BossScript : MonoBehaviour
     NavMeshAgent nav;
     Rigidbody rb;
     public Transform playerPos;
+    public GameObject sp;
+    public Transform summonPos;
+  //  [SerializeField] Transform summonPos;
     public GameObject player;
+    public Actions actions;
+
+    public GameObject babyTomato;
+    public GameObject[] spawnPoint;
+    
 
     public bool chasing;
     float enemySpeed;
-    int groundCheck;
-    public int enemyHealth, enemyMaxHealth = 60;
+    
+    public int enemyHealth, enemyMaxHealth = 300;
     void Start()
     {
 
@@ -24,18 +33,37 @@ public class BossScript : MonoBehaviour
         enemySpeed = 6f;
         player = GameObject.Find("Kyle_Final");
         playerPos = player.transform;
+        sp = GameObject.Find("SummonPos");
+        summonPos = sp.transform;
         enemyHealth = enemyMaxHealth;
         chasing = true;
         nav.angularSpeed = 240;
 
-
-        WhenSpawned();
+        actions = Actions.Attack;
+        
     }
     private void Update()
     {
-        print(nav.hasPath);
-        ChasePlayer();
+
+        DoLogic();
+        
+    }
+    void DoLogic()
+    {
         CheckEnemyHealth();
+
+        if(actions == Actions.Attack)
+        {
+            ChasePlayer();
+        }
+        if(actions == Actions.MoveTo)
+        {
+            MoveToSummon();
+        }
+        if(actions == Actions.Summon)
+        {
+            SummonTomatos();
+        }
     }
     public void EnemyTakeDamage(int damageAmount)
     {
@@ -57,11 +85,7 @@ public class BossScript : MonoBehaviour
             //print("damaged! pt 1");
             StartCoroutine("Attack");
         }
-        if (col.collider.tag == "Floor" && groundCheck == 1)
-        {
-            nav.enabled = true;
-            groundCheck = 0;
-        }
+        
     }
     void ChasePlayer()
     {
@@ -73,12 +97,24 @@ public class BossScript : MonoBehaviour
         }
         // sometimes the tomato just falls through the map, I have no idea why but I've added the below code to try and sort it out //
     }
-    void WhenSpawned()
+    void MoveToSummon()
     {
-        groundCheck = 1;
-        rb.isKinematic = false;
-        rb.velocity = (transform.up * 5) + (transform.forward * 6);
+        nav.SetDestination(summonPos.position);
     }
+    void SummonTomatos()
+    {
+        for (int i = 0; i < spawnPoint.Length; i++)
+        {
+            GameObject obj = Instantiate(babyTomato);
+            obj.transform.rotation = spawnPoint[i].transform.rotation;
+            obj.transform.position = spawnPoint[i].transform.position;
+            if(i == spawnPoint.Length)
+            {
+                actions = Actions.Attack;
+            }
+        }
+    }
+   
     IEnumerator Attack()
     {
         // print("coRoutine");

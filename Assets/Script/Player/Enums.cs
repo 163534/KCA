@@ -8,6 +8,8 @@ public enum Actions
     Climb,
     Idle,
     Exit,
-    Attack
+    Attack,
+    MoveTo,
+    Summon
 }
 

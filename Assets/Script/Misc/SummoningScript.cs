@@ -4,35 +4,20 @@ using UnityEngine;
 
 public class SummoningScript : MonoBehaviour
 {
-    public GameObject babyTomato;
-    public GameObject[] spawnPoint;
-    BossScript bs;
-
-    int trigger;
+   [SerializeField] BossScript bs;
+    public GameObject motherTomato;
     private void Start()
     {
-        bs = GameObject.Find("Mother Tomato").GetComponent<BossScript>();
-        trigger = 1;
+
+        bs = motherTomato.GetComponent<BossScript>();
     }
+
     private void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Boss") && bs.summonCheck)
+        if (col.CompareTag("Boss") && bs.actions == Actions.MoveTo)
         {
-            SpawnEnemy();
+            bs.actions = Actions.Summon;
         }
     }
-    public void SpawnEnemy()
-    {
-        if (trigger == 1)
-        {
-            for (int i = 0; i < spawnPoint.Length; i++)
-            {
-                GameObject obj = Instantiate(babyTomato);
-                obj.transform.rotation = spawnPoint[i].transform.rotation;
-                obj.transform.position = spawnPoint[i].transform.position;
-
-            }
-            trigger = 0;
-        }
-    }
+    
 }

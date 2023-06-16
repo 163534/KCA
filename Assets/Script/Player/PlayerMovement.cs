@@ -243,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnTriggerStay(Collider col)
     {
-        print("gameobject= " + gameObject.name + " player= " + col.gameObject.tag);
+      //  print("gameobject= " + gameObject.name + " player= " + col.gameObject.tag);
         if(col.gameObject.tag=="Climb")
         {
             state = Actions.Climb;
