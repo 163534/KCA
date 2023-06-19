@@ -44,7 +44,7 @@ public class BossScript : MonoBehaviour
     }
     private void Update()
     {
-        print(enemyHealth);
+        print(actions);
         DoLogic();
         
     }

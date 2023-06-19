@@ -639,7 +639,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh48168
+  m_Name: pb_Mesh88354
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9932,7 +9932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bs: {fileID: 0}
-  motherTomato: {fileID: 0}
+  motherTomato: {fileID: 8348254326524245817, guid: ff86a78fb7e2bde4eae210f182c354d5, type: 3}
   babyTomato: {fileID: 0}
   spawnPoint: []
 --- !u!65 &1817409583
@@ -9946,7 +9946,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1817999332 stripped
 Transform:
@@ -12012,11 +12012,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 864087147180916811, guid: 4f2ab58ae60fd414db3d492c2a73a18b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.012166703
+      value: -0.012166707
       objectReference: {fileID: 0}
     - target: {fileID: 864087147180916811, guid: 4f2ab58ae60fd414db3d492c2a73a18b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000030871845
+      value: 0.000030871855
       objectReference: {fileID: 0}
     - target: {fileID: 864087147512337793, guid: 4f2ab58ae60fd414db3d492c2a73a18b, type: 3}
       propertyPath: dM

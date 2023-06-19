@@ -12,6 +12,7 @@ public class SummoningScript : MonoBehaviour
     private void Start()
     {
         
+        
         bs = motherTomato.GetComponent<BossScript>();
         
     }
@@ -19,6 +20,9 @@ public class SummoningScript : MonoBehaviour
     private void Update()
     {
         Summon();
+        if (motherTomato == null)
+            print("mother not found");
+            return;
         
     }
     void Summon()
@@ -44,7 +48,7 @@ public class SummoningScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Boss"))
-        {
+        {   
             bs.actions = Actions.Summon;
         }
     }
