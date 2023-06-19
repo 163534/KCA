@@ -17,6 +17,7 @@ public class BossScript : MonoBehaviour
     public Actions actions;
        
     float enemySpeed;
+    public bool moveTo;
     
     public int enemyHealth, enemyMaxHealth = 300;
     void Start()
@@ -25,6 +26,8 @@ public class BossScript : MonoBehaviour
         player = GameObject.Find("Kyle_Final");
         summonSpot = GameObject.Find("BossSpawner");
         summonPos = summonSpot.transform;
+
+        moveTo = false; 
 
         if(summonSpot == null)
         {
@@ -45,6 +48,7 @@ public class BossScript : MonoBehaviour
     private void Update()
     {
         print(actions);
+        
         DoLogic();
         
     }
@@ -59,6 +63,8 @@ public class BossScript : MonoBehaviour
         if(actions == Actions.MoveTo)
         {
             MoveToSummon();
+            moveTo = true;
+            
         }
         if(actions == Actions.Summon)
         {
@@ -72,6 +78,7 @@ public class BossScript : MonoBehaviour
     void MoveToSummon()
     {
         nav.SetDestination(summonPos.position);
+        
     }
     
     public void EnemyTakeDamage(int damageAmount)
