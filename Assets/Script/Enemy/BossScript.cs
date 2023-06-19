@@ -8,43 +8,43 @@ using UnityEngine.AI;
 public class BossScript : MonoBehaviour
 {
     NavMeshAgent nav;
-    Rigidbody rb;
-    public Transform playerPos;
-    public GameObject sp;
-    public Transform summonPos;
-  //  [SerializeField] Transform summonPos;
     public GameObject player;
+    public Transform playerPos;
+    GameObject summonSpot;
+    public Transform summonPos;
+    Rigidbody rb;
+        
     public Actions actions;
-
-    public GameObject babyTomato;
-    public GameObject[] spawnPoint;
-    
-
-    public bool chasing;
+       
     float enemySpeed;
     
     public int enemyHealth, enemyMaxHealth = 300;
     void Start()
     {
-
         rb = GetComponent<Rigidbody>();
-        nav = GetComponent<NavMeshAgent>();
-        nav.enabled = false;
-        enemySpeed = 6f;
         player = GameObject.Find("Kyle_Final");
+        summonSpot = GameObject.Find("BossSpawner");
+        summonPos = summonSpot.transform;
+
+        if(summonSpot == null)
+        {
+            print("summonPos not found");
+        }
         playerPos = player.transform;
-        sp = GameObject.Find("SummonPos");
-        summonPos = sp.transform;
-        enemyHealth = enemyMaxHealth;
-        chasing = true;
+
+        enemySpeed = 6f;
+        nav = GetComponent<NavMeshAgent>();
+        nav.speed = enemySpeed;
         nav.angularSpeed = 240;
+
+        enemyHealth = enemyMaxHealth;
 
         actions = Actions.Attack;
         
     }
     private void Update()
     {
-
+        print(enemyHealth);
         DoLogic();
         
     }
@@ -62,9 +62,18 @@ public class BossScript : MonoBehaviour
         }
         if(actions == Actions.Summon)
         {
-            SummonTomatos();
+            // Summoning gets played from SummoningScript //
         }
     }
+    void ChasePlayer()
+    {
+        nav.SetDestination(playerPos.position);
+    }
+    void MoveToSummon()
+    {
+        nav.SetDestination(summonPos.position);
+    }
+    
     public void EnemyTakeDamage(int damageAmount)
     {
         enemyHealth -= damageAmount;
@@ -75,6 +84,10 @@ public class BossScript : MonoBehaviour
         if (enemyHealth == 0)
         {
             Destroy(gameObject);
+        }
+        if(enemyHealth == 240)
+        {
+            actions = Actions.MoveTo;
         }
     }
     public void OnCollisionEnter(Collision col)
@@ -87,44 +100,15 @@ public class BossScript : MonoBehaviour
         }
         
     }
-    void ChasePlayer()
-    {
-        if (chasing && nav.enabled == true)
-        {
-
-            nav.SetDestination(playerPos.position);
-            nav.speed = enemySpeed;
-        }
-        // sometimes the tomato just falls through the map, I have no idea why but I've added the below code to try and sort it out //
-    }
-    void MoveToSummon()
-    {
-        nav.SetDestination(summonPos.position);
-    }
-    void SummonTomatos()
-    {
-        for (int i = 0; i < spawnPoint.Length; i++)
-        {
-            GameObject obj = Instantiate(babyTomato);
-            obj.transform.rotation = spawnPoint[i].transform.rotation;
-            obj.transform.position = spawnPoint[i].transform.position;
-            if(i == spawnPoint.Length)
-            {
-                actions = Actions.Attack;
-            }
-        }
-    }
-   
     IEnumerator Attack()
     {
+        
         // print("coRoutine");
         player.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
-        chasing = false;
-        nav.enabled = false;
-        transform.Translate(-transform.forward * enemySpeed * Time.deltaTime);
+        
         yield return new WaitForSecondsRealtime(4.5f);
-        chasing = true;
-        nav.enabled = true;
+        
+        
     }
 
 }

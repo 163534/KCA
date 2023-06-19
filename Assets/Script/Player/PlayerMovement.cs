@@ -150,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             ChangeAnim("Slap");
-            print("attacked");
+            //print("attacked");
             
             
             if (!ws.win)

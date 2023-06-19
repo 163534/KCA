@@ -15,7 +15,6 @@ public class SpawnerScript : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            
             SpawnEnemy();
         }
     }

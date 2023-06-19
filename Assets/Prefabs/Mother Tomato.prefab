@@ -720,20 +720,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05424d89226025549af5d34d7f92eb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPos: {fileID: 0}
-  sp: {fileID: 0}
-  summonPos: {fileID: 0}
   player: {fileID: 0}
+  playerPos: {fileID: 0}
+  summonPos: {fileID: 0}
   actions: 0
-  babyTomato: {fileID: 6997075024467418889, guid: 67f0ea4c77d582e4b8cbd60e923e87cd, type: 3}
-  spawnPoint:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  chasing: 0
   enemyHealth: 0
   enemyMaxHealth: 300
 --- !u!195 &6367047161571563372

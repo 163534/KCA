@@ -34,7 +34,7 @@ public class EnemyScript : MonoBehaviour
     }
     private void Update()
     {
-        print(nav.hasPath);
+      //print(nav.hasPath);
         ChasePlayer();
         CheckEnemyHealth();
     }
@@ -94,7 +94,7 @@ public class EnemyScript : MonoBehaviour
         player.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
         chasing = false;
         nav.enabled = false;
-        transform.Translate(-transform.forward * enemySpeed * Time.deltaTime);
+        //transform.Translate(-transform.forward * enemySpeed * Time.deltaTime);
         yield return new WaitForSecondsRealtime(4.5f);
         chasing = true;
         nav.enabled = true;
